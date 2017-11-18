@@ -7,12 +7,17 @@
     "engines": {
         "vscode": "^1.18.0"
     },
+    "icon": "img/ros.png",
     "extensionDependencies": [
         "xml"
     ],
     "categories": [
         "Languages"
     ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/OTL/vscode-urdf.git"
+    },
     "contributes": {
         "languages": [
             {
