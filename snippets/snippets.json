@@ -1,0 +1,78 @@
+{
+    "robot": {
+        "prefix": "<robot>",
+        "body": [
+            "<robot name=\"${1:robot}\">",
+            "\t<link>",
+            "\t<link>",
+            "\t<joint>",
+            "</robot>"
+        ],
+        "description": "Insert robot"
+    },
+    "geometry": {
+        "prefix": "<geometry>",
+        "body": [
+            "<geometry>",
+            "\t${1|<box size=\"0.0 0.0 0.0\"/>,<cylinder radius=\"0.0\" length=\"0.0\"/>,<sphere radius=\"0.0\"/>,<mesh filename=\"\" scale=\"1.0\"/>|}",
+            "</geometry>"
+        ],
+        "description": "Insert geometry"
+    },
+    "xyz": {
+        "prefix": "xyz=",
+        "body": [
+            "xyz=\"${1:0.0} ${2:0.0} ${3:0.0}\""
+        ],
+        "description": "Insert xyz"
+    },
+    "rpy": {
+        "prefix": "rpy=",
+        "body": [
+            "rpy=\"${1:0.0} ${2:0.0} ${3:0.0}\""
+        ],
+        "description": "Insert rpy"
+    },
+    "joint": {
+        "prefix": "<joint>",
+        "body": [
+            "<joint name=\"${1:joint_name}\" type=\"${2|revolute,continuous,prismatic,fixed,floating,planar|}\">",
+            "\t<origin xyz=\"${3:0.0 0.0 0.0}\" rpy=\"${4:0.0 0.0 0.0}\"/>",
+            "\t<parent link=\"${5}\"/>",
+            "\t<child link=\"${6}\"/>",
+            "\t<axis xyz=\"${7:0.0 0.0 0.0}\"/>",
+            "\t<limit lower=\"${8:0.0}\" upper=\"${9:0.0}\" effort=\"${10:0.0}\" velocity=\"${11:0.0}\"/>",
+            "</joint>"
+        ],
+        "description": "Insert joint"
+    },
+    "link": {
+        "prefix": "<link>",
+        "body": [
+            "<link name=\"${1:link_name}\">",
+            "\t<inertial>",
+            "\t\t<origin xyz=\"${2:0.0 0.0 0.0}\" rpy=\"${3:0.0 0.0 0.0}\">",
+            "\t\t<mass value=\"${4:0.0}\">",
+            "\t\t<inertia ixx=\"0.0\" ixy=\"0.0\" ixz=\"0.0\" iyy=\"0.0\" iyz=\"0.0\" izz=\"0.0\">",
+            "\t</inertial>",
+            "\t<visual name=\"\">",
+            "\t\t<origin xyz=\"${5:0.0 0.0 0.0}\" rpy=\"${6:0.0 0.0 0.0}\">",
+            "\t\t<geometry>",
+            "\t\t\t${7|<box size=\"0.0 0.0 0.0\"/>,<cylinder radius=\"0.0\" length=\"0.0\"/>,<sphere radius=\"0.0\"/>,<mesh filename=\"\" scale=\"1.0\"/>|}",
+            "\t\t</geometry>",
+            "\t\t<material name=\"red\">",
+            "\t\t\t<color rgb=\"1.0 0.0 0.0 1.0\"/>",
+            "\t\t\t<texture filename=\"\"/>",
+            "\t\t</material>",
+            "\t</visual>",
+            "\t<collision>",
+            "\t\t<origin xyz=\"${5:0.0 0.0 0.0}\" rpy=\"${6:0.0 0.0 0.0}\">",
+            "\t\t<geometry>",
+            "\t\t\t${7|<box size=\"0.0 0.0 0.0\"/>,<cylinder radius=\"0.0\" length=\"0.0\"/>,<sphere radius=\"0.0\"/>,<mesh filename=\"\" scale=\"1.0\"/>|}",
+            "\t\t</geometry>",
+            "\t</collision>",
+            "</link>"
+        ],
+        "description": "Insert link"
+    }
+}
