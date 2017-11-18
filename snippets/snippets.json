@@ -38,8 +38,8 @@
         "body": [
             "<joint name=\"${1:joint_name}\" type=\"${2|revolute,continuous,prismatic,fixed,floating,planar|}\">",
             "\t<origin xyz=\"${3:0.0 0.0 0.0}\" rpy=\"${4:0.0 0.0 0.0}\"/>",
-            "\t<parent link=\"${5}\"/>",
-            "\t<child link=\"${6}\"/>",
+            "\t<parent link=\"${5:parent_link}\"/>",
+            "\t<child link=\"${6:child_link}\"/>",
             "\t<axis xyz=\"${7:0.0 0.0 0.0}\"/>",
             "\t<limit lower=\"${8:0.0}\" upper=\"${9:0.0}\" effort=\"${10:0.0}\" velocity=\"${11:0.0}\"/>",
             "</joint>"

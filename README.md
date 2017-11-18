@@ -1,6 +1,7 @@
 # urdf README
 
-This is the README for your extension "urdf". After writing up a brief description, we recommend including the following sections.
+[URDF](http://wiki.ros.org/urdf) support for VSCode.
+It includes some snippets and associates .urdf/.xacro files with xml format.
 
 ## Features
 
