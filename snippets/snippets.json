@@ -66,7 +66,7 @@
             "\t\t\t${7|<box size=\"0.0 0.0 0.0\"/>,<cylinder radius=\"0.0\" length=\"0.0\"/>,<sphere radius=\"0.0\"/>,<mesh filename=\"\" scale=\"1.0\"/>|}",
             "\t\t</geometry>",
             "\t\t<material name=\"\">",
-            "\t\t\t<color rgb=\"1.0 0.0 0.0 1.0\"/>",
+            "\t\t\t<color rgba=\"1.0 0.0 0.0 1.0\"/>",
             "\t\t\t<texture filename=\"\"/>",
             "\t\t</material>",
             "\t</visual>",
