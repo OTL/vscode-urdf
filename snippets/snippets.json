@@ -1,58 +1,274 @@
 {
-    "xml_version": {
-		"prefix": "<xml_version>",
-		"body": "<?xml version=\"${1:1.0}\"?>",
-        "description": "Insert XML version"
+	"xml_version": {
+		"prefix": "xml_version",
+		"body": [
+			"<?xml version=\"${1:1.0}\"?>",
+			"$0"
+		]
 	},
-    "robot": {
-        "prefix": "<robot>",
-        "body": [
-            "<robot name=\"${1:robot}\">",
-            "\t<link>",
-            "\t<link>",
-            "\t<joint>",
-            "</robot>"
-        ],
-        "description": "Insert robot"
-    },
-    "geometry": {
-        "prefix": "<geometry>",
-        "body": [
-            "<geometry>",
-            "\t${1|<box size=\"0.0 0.0 0.0\"/>,<cylinder radius=\"0.0\" length=\"0.0\"/>,<sphere radius=\"0.0\"/>,<mesh filename=\"\" scale=\"1.0\"/>|}",
-            "</geometry>"
-        ],
-        "description": "Insert geometry"
-    },
-    "xyz": {
-        "prefix": "xyz=",
-        "body": [
-            "xyz=\"${1:0.0} ${2:0.0} ${3:0.0}\""
-        ],
-        "description": "Insert xyz"
-    },
-    "rpy": {
-        "prefix": "rpy=",
-        "body": [
-            "rpy=\"${1:0.0} ${2:0.0} ${3:0.0}\""
-        ],
-        "description": "Insert rpy"
-    },
-    "joint": {
-        "prefix": "<joint>",
-        "body": [
-            "<joint name=\"${1:joint_name}\" type=\"${2|revolute,continuous,prismatic,fixed,floating,planar|}\">",
-            "\t<origin xyz=\"${3:0.0 0.0 0.0}\" rpy=\"${4:0.0 0.0 0.0}\"/>",
-            "\t<parent link=\"${5:parent_link}\"/>",
-            "\t<child link=\"${6:child_link}\"/>",
-            "\t<axis xyz=\"${7:0.0 0.0 0.0}\"/>",
-            "\t<limit lower=\"${8:0.0}\" upper=\"${9:0.0}\" effort=\"${10:0.0}\" velocity=\"${11:0.0}\"/>",
-            "</joint>"
-        ],
-        "description": "Insert joint"
-    },
-    "link": {
-        "prefix": "<link>",
+
+	"robot": {
+		"prefix": "robot",
+		"body": [
+			"<robot name=\"${1:robot_name}\">",
+			"\t$0",
+			"</robot>"
+		],
+		"description": "Insert basic robot"
+	},
+
+	"link": {
+		"prefix": "link",
+		"body": [
+			"<link name=\"${1:link_name}\">",
+			"\t$0",
+			"</link>"
+		],
+		"description": "Insert basic link"
+	},
+
+	"inertial": {
+		"prefix": "inertial",
+		"body": [
+			"<inertial>",
+			"\t$0",
+			"</inertial>"
+		],
+		"description": "Insert basic inertial properties"
+	},
+
+	"origin": {
+		"prefix": "origin",
+		"body": "<origin $0/>",
+		"description": "Insert basic origin"
+	},
+
+	"xyz": {
+		"prefix": "xyz",
+		"body":	"xyz=\"${1:0.0} ${2:0.0} ${3:0.0}\"",
+		"description": "Insert xyz"
+	},
+
+	"originXyz": {
+		"prefix": "origin",
+		"body": "<origin xyz=\"${1:0.0} ${2:0.0} ${3:0.0}\"/>",
+		"description": "Insert origin with xyz coordinates"
+	},
+	
+	"rpy": {
+		"prefix": "rpy",
+		"body":	"rpy=\"${1:0.0} ${2:0.0} ${3:0.0}\"",
+		"description": "Insert rpy"
+	},
+
+	"originRpy": {
+		"prefix": "origin",
+		"body": "<origin rpy=\"${1:0.0} ${2:0.0} ${3:0.0}\"/>",
+		"description": "Insert origin with rpy coordinates"
+	},
+
+	"originXyzRpy": {
+		"prefix": "origin",
+		"body": "<origin xyz=\"${1:0.0} ${2:0.0} ${3:0.0}\" rpy=\"${4:0.0} ${5:0.0} ${6:0.0}\"/>",
+		"description": "Insert origin with xyz and rpy coordinates"
+	},
+
+	"mass": {
+		"prefix": "mass",
+		"body": "<mass value=\"${1:0.0}\"/>",
+		"description": "Insert mass value"
+	},
+
+	"inertia matrix": {
+		"prefix": "inertia matrix",
+		"body": "<inertia ixx=\"${1:0.0}\" ixy=\"${2:0.0}\" ixz=\"${3:0.0}\" iyy=\"${4:0.0}\" iyz=\"${5:0.0}\" izz=\"${6:0.0}\"/>",
+		"description": "Insert inertia"
+	},
+
+	"inertialFull": {
+		"prefix": "inertial",
+		"body": [
+			"<inertial>",
+			"\t<origin xyz=\"${1:0.0} ${2:0.0} ${3:0.0}\" rpy=\"${4:0.0} ${5:0.0} ${6:0.0}\"/>",
+			"\t<mass value=\"${7:0.0}\"/>",
+			"\t<inertia ixx=\"${8:0.0}\" ixy=\"${9:0.0}\" ixz=\"${10:0.0}\" iyy=\"${11:0.0}\" iyz=\"${12:0.0}\" izz=\"${13:0.0}\"/>",
+			"</inertial>",
+			"$0"
+		],
+		"description": "Insert full inertial properties"
+	},
+
+	"visual": {
+		"prefix": "visual",
+		"body": [
+			"${1|<visual>,<visual name=\"\">|}",
+			"\t$0",
+			"</visual>"
+		],
+		"description": "Insert visual properties"
+	},
+
+	"visualOrigin": {
+		"prefix": "visual",
+		"body": [
+			"${1|<visual>,<visual name=\"\">|}",
+			"\t<origin xyz=\"${2:0.0} ${3:0.0} ${4:0.0}\" rpy=\"${5:0.0} ${6:0.0} ${7:0.0}\"/>",
+			"\t$0",
+			"</visual>"
+		],
+		"description": "Insert visual properties with origin"
+	},
+
+	"geometry": {
+		"prefix": "geometry",
+		"body": [
+			"<geometry>",
+			"\t$0",
+			"</geometry>"
+		],
+		"description": "Insert basic geometric properties"
+	},
+
+	"geometryBox": {
+		"prefix": "box",
+		"body": [
+			"<geometry>",
+			"\t<box size=\"${1:0.0} ${2:0.0} ${3:0.0}\"/>",
+			"</geometry>$0"
+		],
+		"description": "Insert basic geometric properties"
+	},
+
+	"geometryCylinder": {
+		"prefix": "cylinder",
+		"body": [
+			"<geometry>",
+			"\t<cylinder radius=\"${1:0.0}\" length=\"${2:0.0}\"/>",
+			"</geometry>$0"
+		],
+		"description": "Insert basic geometric properties"
+	},
+
+	"geometrySphere": {
+		"prefix": "sphere",
+		"body": [
+			"<geometry>",
+			"\t<sphere radius=\"${1:0.0}\"/>",
+			"</geometry>$0"
+		],
+		"description": "Insert basic geometric properties"
+	},
+
+	"geometryMesh": {
+		"prefix": "mesh",
+		"body": [
+			"<geometry>",
+			"\t<mesh filename=\"${1:file_path}\" scale=\"${2:1.0}\"/>",
+			"</geometry>$0"
+		],
+		"description": "Insert basic geometric properties"
+	},
+
+	"box":{
+		"prefix": "box",
+		"body": "<box size=\"${1:0.0} ${2:0.0} ${3:0.0}\"/>",
+		"description": "Insert box"
+	},
+
+	"cylinder":{
+		"prefix": "cylinder",
+		"body": "<cylinder radius=\"${1:0.0}\" length=\"${2:0.0}\"/>",
+		"description": "Insert cylinder"
+	},
+
+	"sphere":{
+		"prefix": "sphere",
+		"body": "<sphere radius=\"${1:0.0}\"/>",
+		"description": "Insert sphere"
+	},
+
+	"mesh":{
+		"prefix": "mesh",
+		"body": "<mesh filename=\"${1:file_path}\" scale=\"${2:1.0}\"/>",
+		"description": "Insert mesh"
+	},
+
+	"geometryFull": {
+		"prefix": "geometry",
+		"body": [
+			"<geometry>",
+			"\t${1|<box size=\"0.0 0.0 0.0\"/>,<cylinder radius=\"0.0\" length=\"0.0\"/>,<sphere radius=\"0.0\"/>,<mesh filename=\"\" scale=\"1.0\"/>|}",
+			"</geometry>"
+		],
+		"description": "Insert full geometric properties"
+	},
+
+	"material": {
+		"prefix": "material",
+		"body": [
+			"${1|<material>,<material name=\"\">|}",
+			"\t$0",
+			"</material>"
+		],
+		"description": "Insert material properties"
+	},
+
+	"color": {
+		"prefix": "color",
+		"body": "<color rgba=\"${1:0.0} ${2:0.0} ${3:0.0} ${4:0.0}\"/>",
+		"description": "Insert color"
+	},
+
+	"materialRgb": {
+		"prefix": "material",
+		"body": [
+			"${1|<material>,<material name=\"\">|}",
+			"\t<color rgba=\"${2:0.0} ${3:0.0} ${4:0.0} ${5:1.0}\"/>",
+			"</material>"
+		],
+		"description": "Insert material's color"
+	},
+	
+	"texture": {
+		"prefix": "texture",
+		"body": "<texture filename=\"${1:file_path}\"/>",
+		"description": "Insert color"
+	},
+
+	"materialRgbTexture": {
+		"prefix": "material",
+		"body": [
+			"${1|<material>,<material name=\"\">|}",
+			"\t<color rgba=\"${2:0.0} ${3:0.0} ${4:0.0} ${5:1.0}\"/>",
+			"\t<texture filename=\"${6:file_path}\"/>",
+			"</material>"
+		],
+		"description": "Insert material's color and texture"
+	},
+
+	"collision": {
+		"prefix": "collision",
+		"body": [
+			"<collision>",
+			"\t$0",
+			"</collision>"
+		],
+		"description": "Insert collision information"
+	},
+
+	"collisionOrigin": {
+		"prefix": "collision",
+		"body": [
+			"<collision>",
+			"\t<origin xyz=\"${1:0.0} ${2:0.0} ${3:0.0}\" rpy=\"${4:0.0} ${5:0.0} ${6:0.0}\"/>",
+			"\t$0",
+			"</collision>"
+		],
+		"description": "Insert collision information with origin"
+	},
+
+	"linkFull": {
+        "prefix": "link",
         "body": [
             "<link name=\"${1:link_name}\">",
             "\t<inertial>",
@@ -78,6 +294,54 @@
             "\t</collision>",
             "</link>"
         ],
-        "description": "Insert link"
-    }
+        "description": "Insert full link"
+    },
+	
+	"joint": {
+		"prefix": "joint",
+		"body": [
+			"<joint name=\"${1:joint_name}\" type=\"${2|revolute,continuous,prismatic,fixed,floating,planar|}\">",
+			"\t$0",
+			"</joint>"
+		],
+		"description": "Insert basic joint"
+	},
+
+	"parent link": {
+		"prefix": "parent",
+		"body": "<parent link=\"${1:parent_link}\"/>",
+		"description": "Insert parent link"
+	},
+
+	"child link": {
+		"prefix": "child",
+		"body": "<child link=\"${1:child_link}\"/>",
+		"description": "Insert child link"
+	},
+
+	"axis": {
+		"prefix": "axis",
+		"body": "<axis xyz=\"${1:0.0} ${2:0.0} ${3:0.0}\"/>",
+		"description": "Insert axis' coordinates"
+	},
+
+	"joint limit": {
+		"prefix": "limit",
+		"body": "<limit lower=\"${1:0.0}\" upper=\"${2:0.0}\" effort=\"${3:0.0}\" velocity=\"${4:0.0}\"/>",
+		"description": "Insert joint's limits"
+	},
+
+	"jointFull": {
+		"prefix": "joint",
+		"body": [
+			"<joint name=\"${1:joint_name}\" type=\"${2|revolute,continuous,prismatic,fixed,floating,planar|}\">",
+			"\t<origin xyz=\"${3:0.0} ${4:0.0} ${5:0.0}\" rpy=\"${6:0.0} ${7:0.0} ${8:0.0}\"/>",
+			"\t<parent link=\"${9:parent_link}\"/>",
+			"\t<child link=\"${10:child_link}\"/>",
+			"\t<axis xyz=\"${11:0.0} ${12:0.0} ${13:0.0}\"/>",
+			"\t<limit lower=\"${14:0.0}\" upper=\"${15:0.0}\" effort=\"${16:0.0}\" velocity=\"${17:0.0}\"/>",
+			"</joint>"
+		],
+		"description": "Insert full joint"
+	}
 }
