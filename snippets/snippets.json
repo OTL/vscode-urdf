@@ -129,6 +129,46 @@
 		"description": "Insert basic geometric properties"
 	},
 
+	"geometryBox": {
+		"prefix": "box",
+		"body": [
+			"<geometry>",
+			"\t<box size=\"${1:0.0} ${2:0.0} ${3:0.0}\"/>",
+			"</geometry>$0"
+		],
+		"description": "Insert basic geometric properties"
+	},
+
+	"geometryCylinder": {
+		"prefix": "cylinder",
+		"body": [
+			"<geometry>",
+			"\t<cylinder radius=\"${1:0.0}\" length=\"${2:0.0}\"/>",
+			"</geometry>$0"
+		],
+		"description": "Insert basic geometric properties"
+	},
+
+	"geometrySphere": {
+		"prefix": "sphere",
+		"body": [
+			"<geometry>",
+			"\t<sphere radius=\"${1:0.0}\"/>",
+			"</geometry>$0"
+		],
+		"description": "Insert basic geometric properties"
+	},
+
+	"geometryMesh": {
+		"prefix": "mesh",
+		"body": [
+			"<geometry>",
+			"\t<mesh filename=\"${1:file_path}\" scale=\"${2:1.0}\"/>",
+			"</geometry>$0"
+		],
+		"description": "Insert basic geometric properties"
+	},
+
 	"box":{
 		"prefix": "box",
 		"body": "<box size=\"${1:0.0} ${2:0.0} ${3:0.0}\"/>",
