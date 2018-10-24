@@ -307,16 +307,14 @@
 		"description": "Insert basic joint"
 	},
 
-	"parent link": {
-		"prefix": "parent",
-		"body": "<parent link=\"${1:parent_link}\"/>",
-		"description": "Insert parent link"
-	},
-
-	"child link": {
-		"prefix": "child",
-		"body": "<child link=\"${1:child_link}\"/>",
-		"description": "Insert child link"
+	"parentChild link": {
+		"prefix": ["parent", "child"],
+		"body": [
+			"<parent link=\"${1:parent_link}\"/>", 
+			"<child link=\"${2:child_link}\"/>",
+			"$0"
+		],
+		"description": "Insert parent/child link"
 	},
 
 	"axis": {
