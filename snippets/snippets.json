@@ -38,6 +38,42 @@
 		"description": "Insert color"
 	},
 
+	"colorRed": {
+		"prefix": [
+			"color",
+			"red"
+		],
+		"body": [
+			"<color rgba=\"1.0 0.0 0.0 0.0\"/>",
+			"$0"
+		],
+		"description": "Insert red color"
+	},
+
+	"colorGreen": {
+		"prefix": [
+			"color",
+			"green"
+		],
+		"body": [
+			"<color rgba=\"0.0 1.0 0.0 0.0\"/>",
+			"$0"
+		],
+		"description": "Insert green color"
+	},
+
+	"colorBlue": {
+		"prefix": [
+			"color",
+			"blue"
+		],
+		"body": [
+			"<color rgba=\"0.0 0.0 1.0 0.0\"/>",
+			"$0"
+		],
+		"description": "Insert blue color"
+	},
+
 	"cylinder":{
 		"prefix": "cylinder",
 		"body": "<cylinder radius=\"${1:0.0}\" length=\"${2:0.0}\"/>",
