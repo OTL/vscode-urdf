@@ -18,3 +18,9 @@
 
 there are no settings now.
 
+## Contributors 
+
+Thank you!
+
+* Olcina
+* fabiocapasso93
