@@ -270,6 +270,15 @@
 		"description": "Insert material's color and texture"
 	},
 
+	"materialInline": {
+		"prefix": "material",
+		"body": [
+			"<material name=\"${1:materialName}\"/>"
+		],
+		"description": "Insert material tag as one line"
+	},
+
+
 	"mass": {
 		"prefix": "mass",
 		"body": "<mass value=\"${1:0.0}\"/>",
@@ -326,6 +335,26 @@
 		"description": "Insert basic robot"
 	},
 
+	"robotXacro": {
+		"prefix": "robot",
+		"body": [
+			"<robot xmlns:xacro=\"http://www.ros.org/wiki/xacro\" name=\"${1:robot_name}\">",
+			"\t$0",
+			"</robot>"
+		],
+		"description": "Insert basic robot with xacro support"
+	},
+
+	"robotXacroClean": {
+		"prefix": "robot",
+		"body": [
+			"<robot xmlns:xacro=\"http://www.ros.org/wiki/xacro\">",
+			"\t$0",
+			"</robot>"
+		],
+		"description": "Insert basic robot without name but with xacro support"
+	},
+
 	"rpy": {
 		"prefix": "rpy",
 		"body":	"rpy=\"${1:0.0} ${2:0.0} ${3:0.0}\"",
@@ -377,5 +406,12 @@
 		"prefix": "xyz",
 		"body":	"xyz=\"${1:0.0} ${2:0.0} ${3:0.0}\"",
 		"description": "Insert xyz"
+	},
+
+	"xacroInclude": {
+		"prefix": "include",
+		"body":	"<xacro:include filename=\"${1:xacroFile}\"/>",
+		"description": "Insert xacro include tag"
 	}
+
 }
