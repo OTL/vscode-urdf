@@ -18,9 +18,10 @@
 
 there are no settings now.
 
-## Contributors 
+## Contributors
 
 Thank you!
 
 * Olcina
-* fabiocapasso93
+* Fabio Capasso
+* Trimple
