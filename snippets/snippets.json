@@ -248,7 +248,7 @@
 		],
 		"description": "Insert material properties"
 	},
-	
+
 	"materialRgb": {
 		"prefix": "material",
 		"body": [
@@ -302,7 +302,7 @@
 		"body": "<origin rpy=\"${1:0.0} ${2:0.0} ${3:0.0}\"/>",
 		"description": "Insert origin with rpy coordinates"
 	},
-	
+
 	"originXyz": {
 		"prefix": "origin",
 		"body": "<origin xyz=\"${1:0.0} ${2:0.0} ${3:0.0}\"/>",
@@ -318,7 +318,7 @@
 	"parentChild link": {
 		"prefix": ["parent", "child"],
 		"body": [
-			"<parent link=\"${1:parent_link}\"/>", 
+			"<parent link=\"${1:parent_link}\"/>",
 			"<child link=\"${2:child_link}\"/>",
 			"$0"
 		],
@@ -412,6 +412,21 @@
 		"prefix": "include",
 		"body":	"<xacro:include filename=\"${1:xacroFile}\"/>",
 		"description": "Insert xacro include tag"
+	},
+	"transmissionFull": {
+		"prefix": "transmission",
+		"body": [
+			"<transmission name=\"${1:transmission_name}\">",
+			"\t<type>${2:transmission_interface/SimpleTransmission}</type>",
+			"\t<joint name=\"${3:joint_name}\">",
+			"\t\t<hardwareInterface>${4:hardware_interface/PositionJointInterface}</hardwareInterface>",
+			"\t</joint>",
+			"\t<actuator name=\"${5:actuator_name}\">",
+			"\t\t<mechanicalReduction>${6:1.0}</mechanicalReduction>",
+			"\t\t<hardwareInterface>${7:hardware_interface/PositionJointInterface}</hardwareInterface>",
+			"\t</actuator>",
+			"</transmission>"
+		],
+		"description": "Insert full transmission"
 	}
-
 }
