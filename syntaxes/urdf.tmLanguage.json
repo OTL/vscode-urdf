@@ -1,0 +1,197 @@
+{
+    "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+    "name": "URDF",
+    "scopeName": "text.xml.urdf",
+    "fileTypes": ["urdf", "xacro"],
+    "patterns": [
+        { "include": "#comment" },
+        { "include": "#prolog" },
+        { "include": "#xacro-tag" },
+        { "include": "#container-tag" },
+        { "include": "#structure-tag" },
+        { "include": "#subelement-tag" },
+        { "include": "#material-tag" },
+        { "include": "#inertial-tag" },
+        { "include": "#geometry-tag" },
+        { "include": "#gazebo-prop-tag" },
+        { "include": "#generic-tag" },
+        { "include": "#xacro-interpolation" },
+        { "include": "text.xml" }
+    ],
+    "repository": {
+        "comment": {
+            "begin": "<!--",
+            "end": "-->",
+            "name": "comment.block.xml",
+            "captures": {
+                "0": { "name": "punctuation.definition.comment.xml" }
+            }
+        },
+        "prolog": {
+            "begin": "(<\\?)(xml)",
+            "beginCaptures": {
+                "1": { "name": "punctuation.definition.tag.xml" },
+                "2": { "name": "entity.name.tag.xml" }
+            },
+            "end": "(\\?>)",
+            "endCaptures": {
+                "1": { "name": "punctuation.definition.tag.xml" }
+            },
+            "name": "meta.tag.preprocessor.xml",
+            "patterns": [{ "include": "#attribute" }]
+        },
+        "xacro-tag": {
+            "begin": "(</?)(xacro:[A-Za-z_][\\w]*)(?=[\\s/>])",
+            "beginCaptures": {
+                "1": { "name": "punctuation.definition.tag.xml" },
+                "2": { "name": "entity.name.function.xacro" }
+            },
+            "end": "(/?>)",
+            "endCaptures": { "1": { "name": "punctuation.definition.tag.xml" } },
+            "name": "meta.tag.xml",
+            "patterns": [{ "include": "#attribute" }]
+        },
+        "container-tag": {
+            "begin": "(</?)(robot|link|joint|transmission|gazebo)(?=[\\s/>])",
+            "beginCaptures": {
+                "1": { "name": "punctuation.definition.tag.xml" },
+                "2": { "name": "keyword.control.urdf" }
+            },
+            "end": "(/?>)",
+            "endCaptures": { "1": { "name": "punctuation.definition.tag.xml" } },
+            "name": "meta.tag.xml",
+            "patterns": [{ "include": "#attribute" }]
+        },
+        "structure-tag": {
+            "begin": "(</?)(parent|child|mimic)(?=[\\s/>])",
+            "beginCaptures": {
+                "1": { "name": "punctuation.definition.tag.xml" },
+                "2": { "name": "variable.parameter.urdf" }
+            },
+            "end": "(/?>)",
+            "endCaptures": { "1": { "name": "punctuation.definition.tag.xml" } },
+            "name": "meta.tag.xml",
+            "patterns": [{ "include": "#attribute" }]
+        },
+        "subelement-tag": {
+            "begin": "(</?)(visual|collision|inertial|geometry|origin|axis|limit|dynamics|safety_controller|calibration)(?=[\\s/>])",
+            "beginCaptures": {
+                "1": { "name": "punctuation.definition.tag.xml" },
+                "2": { "name": "storage.type.urdf" }
+            },
+            "end": "(/?>)",
+            "endCaptures": { "1": { "name": "punctuation.definition.tag.xml" } },
+            "name": "meta.tag.xml",
+            "patterns": [{ "include": "#attribute" }]
+        },
+        "material-tag": {
+            "begin": "(</?)(material|color|texture)(?=[\\s/>])",
+            "beginCaptures": {
+                "1": { "name": "punctuation.definition.tag.xml" },
+                "2": { "name": "support.class.material.urdf" }
+            },
+            "end": "(/?>)",
+            "endCaptures": { "1": { "name": "punctuation.definition.tag.xml" } },
+            "name": "meta.tag.xml",
+            "patterns": [{ "include": "#attribute" }]
+        },
+        "inertial-tag": {
+            "begin": "(</?)(mass|inertia)(?=[\\s/>])",
+            "beginCaptures": {
+                "1": { "name": "punctuation.definition.tag.xml" },
+                "2": { "name": "support.function.inertial.urdf" }
+            },
+            "end": "(/?>)",
+            "endCaptures": { "1": { "name": "punctuation.definition.tag.xml" } },
+            "name": "meta.tag.xml",
+            "patterns": [{ "include": "#attribute" }]
+        },
+        "geometry-tag": {
+            "comment": "Element-name alternation mirrors GEOMETRY_PRIMITIVES in server/src/diagnostics.rs (single source of truth). Update both when adding a new URDF geometry primitive.",
+            "begin": "(</?)(box|cylinder|sphere|mesh)(?=[\\s/>])",
+            "beginCaptures": {
+                "1": { "name": "punctuation.definition.tag.xml" },
+                "2": { "name": "support.type.urdf" }
+            },
+            "end": "(/?>)",
+            "endCaptures": { "1": { "name": "punctuation.definition.tag.xml" } },
+            "name": "meta.tag.xml",
+            "patterns": [{ "include": "#attribute" }]
+        },
+        "gazebo-prop-tag": {
+            "comment": "Element-name alternation mirrors GAZEBO_PROPS in server/src/diagnostics.rs (single source of truth). Update both when adding or renaming a Gazebo property.",
+            "begin": "(</?)(mu1|mu2|mu|kp|kd|maxVel|minDepth|maxContacts|selfCollide|turnGravityOff|gravity|implicitSpringDamper|dampingFactor|laserRetro|material|stopCfm|stopErp|fudgeFactor|sensor|plugin)(?=[\\s/>])",
+            "beginCaptures": {
+                "1": { "name": "punctuation.definition.tag.xml" },
+                "2": { "name": "support.constant.gazebo" }
+            },
+            "end": "(/?>)",
+            "endCaptures": { "1": { "name": "punctuation.definition.tag.xml" } },
+            "name": "meta.tag.xml",
+            "patterns": [{ "include": "#attribute" }]
+        },
+        "generic-tag": {
+            "begin": "(</?)([A-Za-z_:][\\w:.-]*)",
+            "beginCaptures": {
+                "1": { "name": "punctuation.definition.tag.xml" },
+                "2": { "name": "entity.name.tag.xml" }
+            },
+            "end": "(/?>)",
+            "endCaptures": { "1": { "name": "punctuation.definition.tag.xml" } },
+            "name": "meta.tag.xml",
+            "patterns": [{ "include": "#attribute" }]
+        },
+        "attribute": {
+            "patterns": [
+                {
+                    "match": "(name|link|joint|type|reference|rgba|xyz|rpy|size|radius|length|filename|scale|value|lower|upper|effort|velocity|damping|friction|multiplier|offset|ixx|ixy|ixz|iyy|iyz|izz|mass|x|y|z)(=)",
+                    "captures": {
+                        "1": { "name": "entity.other.attribute-name.urdf" },
+                        "2": { "name": "punctuation.separator.key-value.xml" }
+                    }
+                },
+                {
+                    "match": "([A-Za-z_:][\\w:.-]*)(=)",
+                    "captures": {
+                        "1": { "name": "entity.other.attribute-name.xml" },
+                        "2": { "name": "punctuation.separator.key-value.xml" }
+                    }
+                },
+                { "include": "#string-double" },
+                { "include": "#string-single" }
+            ]
+        },
+        "string-double": {
+            "begin": "\"",
+            "end": "\"",
+            "name": "string.quoted.double.xml",
+            "patterns": [
+                { "include": "#xacro-interpolation" },
+                { "include": "#joint-type-value" }
+            ]
+        },
+        "string-single": {
+            "begin": "'",
+            "end": "'",
+            "name": "string.quoted.single.xml",
+            "patterns": [
+                { "include": "#xacro-interpolation" },
+                { "include": "#joint-type-value" }
+            ]
+        },
+        "joint-type-value": {
+            "comment": "Value alternation mirrors JOINT_TYPES in server/src/diagnostics.rs (single source of truth). Update both when adding a new URDF joint type.",
+            "match": "\\b(revolute|continuous|prismatic|fixed|floating|planar)\\b",
+            "name": "constant.language.urdf"
+        },
+        "xacro-interpolation": {
+            "name": "meta.interpolation.xacro",
+            "match": "(\\$\\{)([^}]*)(\\})",
+            "captures": {
+                "1": { "name": "punctuation.definition.template-expression.begin" },
+                "2": { "name": "variable.other.xacro" },
+                "3": { "name": "punctuation.definition.template-expression.end" }
+            }
+        }
+    }
+}

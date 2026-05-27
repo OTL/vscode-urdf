@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<robot name="sample">
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="1 1 1"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <link name="arm"/>
+
+  <joint name="base_to_arm" type="revolute">
+    <parent link="base_link"/>
+    <child link="arm"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14" upper="3.14" effort="10" velocity="1.0"/>
+  </joint>
+</robot>

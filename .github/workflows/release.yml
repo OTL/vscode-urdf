@@ -1,0 +1,109 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build:
+    name: Build ${{ matrix.label }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            label: linux-x64
+            rust-targets: x86_64-unknown-linux-gnu
+            vsce-targets: linux-x64
+          - os: macos-latest
+            label: darwin-universal
+            rust-targets: x86_64-apple-darwin aarch64-apple-darwin
+            vsce-targets: darwin-x64 darwin-arm64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.rust-targets }}
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: client/package-lock.json
+
+      - name: Cache Rust dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            server/target
+          key: ${{ runner.os }}-${{ matrix.label }}-cargo-${{ hashFiles('server/Cargo.lock') }}
+
+      - name: Test server
+        if: matrix.label == 'linux-x64'
+        run: cargo test --manifest-path server/Cargo.toml --release
+
+      - name: Build server (release) for each Rust target
+        run: |
+          for t in ${{ matrix.rust-targets }}; do
+            cargo build --release --manifest-path server/Cargo.toml --target "$t"
+          done
+
+      - name: Stage server binary
+        run: |
+          mkdir -p server/bin
+          targets=(${{ matrix.rust-targets }})
+          if [ ${#targets[@]} -eq 1 ]; then
+            cp "server/target/${targets[0]}/release/urdf-lsp" server/bin/urdf-lsp
+          else
+            lipo -create -output server/bin/urdf-lsp \
+              server/target/x86_64-apple-darwin/release/urdf-lsp \
+              server/target/aarch64-apple-darwin/release/urdf-lsp
+          fi
+          chmod +x server/bin/urdf-lsp
+
+      - name: Install client dependencies
+        run: npm --prefix client ci
+
+      - name: Build client
+        run: npm run build:client
+
+      - name: Package extension(s)
+        run: |
+          npm install -g @vscode/vsce
+          for t in ${{ matrix.vsce-targets }}; do
+            vsce package --no-dependencies --target "$t" --out "urdf-$t.vsix"
+          done
+
+      - name: Upload .vsix
+        uses: actions/upload-artifact@v4
+        with:
+          name: vsix-${{ matrix.label }}
+          path: urdf-*.vsix
+          retention-days: 7
+
+  release:
+    name: Create GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download .vsix artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: vsix-*
+          merge-multiple: true
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: '*.vsix'
+          fail_on_unmatched_files: true
+          generate_release_notes: true

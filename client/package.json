@@ -1,0 +1,21 @@
+{
+    "name": "urdf-client",
+    "version": "0.0.1",
+    "private": true,
+    "description": "VS Code thin client for the urdf-lsp server",
+    "main": "out/extension.js",
+    "scripts": {
+        "typecheck": "tsc -p . --noEmit",
+        "bundle": "esbuild src/extension.ts --bundle --platform=node --target=node18 --external:vscode --format=cjs --outfile=out/extension.js --sourcemap",
+        "compile": "npm run typecheck && npm run bundle"
+    },
+    "dependencies": {
+        "vscode-languageclient": "^9.0.1"
+    },
+    "devDependencies": {
+        "@types/node": "^20.11.0",
+        "@types/vscode": "^1.82.0",
+        "esbuild": "^0.24.0",
+        "typescript": "^5.4.0"
+    }
+}

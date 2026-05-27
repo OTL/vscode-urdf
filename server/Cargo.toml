@@ -1,0 +1,19 @@
+[package]
+name = "urdf-lsp"
+version = "0.1.0"
+edition = "2021"
+description = "Language server for URDF/xacro robot description files"
+license = "MIT"
+
+[[bin]]
+name = "urdf-lsp"
+path = "src/main.rs"
+
+[dependencies]
+tower-lsp = "0.20"
+tokio = { version = "1", features = ["rt-multi-thread", "io-std", "macros"] }
+roxmltree = "0.20"
+
+[profile.release]
+lto = "thin"
+codegen-units = 1

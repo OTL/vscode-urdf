@@ -1,45 +1,72 @@
 {
     "name": "urdf",
-    "displayName": "URDF",
-    "description": "Support of URDF/xacro in VSCode",
-    "version": "0.3.0",
-    "publisher": "smilerobotics",
+    "displayName": "URDF / xacro Language Server",
+    "description": "URDF and xacro language server: diagnostics, completion, hover, go-to-definition, rename, inlay hints, quick-fixes.",
+    "version": "0.5.4",
+    "publisher": "Roy-Pichifkes",
     "engines": {
-        "vscode": "^1.18.0"
+        "vscode": "^1.82.0"
     },
     "icon": "img/ros.png",
-    "extensionDependencies": [
-        "xml"
-    ],
     "categories": [
-        "Snippets"
+        "Programming Languages",
+        "Snippets",
+        "Linters"
+    ],
+    "main": "./client/out/extension.js",
+    "activationEvents": [
+        "onLanguage:urdf"
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/OTL/vscode-urdf.git"
+        "url": "https://github.com/pichifkes/vscode-urdf.git"
     },
     "contributes": {
         "languages": [
             {
-                "id": "xml",
+                "id": "urdf",
                 "aliases": [
+                    "URDF",
                     "urdf",
-                    "URDF"
+                    "xacro"
                 ],
                 "extensions": [
                     ".urdf",
                     ".xacro"
-                ]
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "urdf",
+                "scopeName": "text.xml.urdf",
+                "path": "./syntaxes/urdf.tmLanguage.json"
             }
         ],
         "snippets": [
             {
-                "language": "xml",
+                "language": "urdf",
                 "path": "./snippets/snippets.json"
             }
-        ]
+        ],
+        "configurationDefaults": {
+            "[urdf]": {
+                "editor.quickSuggestions": {
+                    "other": "on",
+                    "comments": "off",
+                    "strings": "on"
+                }
+            }
+        }
     },
-    "devDependencies": {
-        "vscode": "^1.1.6"
+    "scripts": {
+        "install:client": "npm --prefix client install",
+        "build:client": "npm --prefix client run compile",
+        "build:server": "cargo build --manifest-path server/Cargo.toml",
+        "build:server:release": "cargo build --release --manifest-path server/Cargo.toml",
+        "stage:server": "mkdir -p server/bin && cp server/target/release/urdf-lsp server/bin/urdf-lsp && chmod +x server/bin/urdf-lsp",
+        "build": "npm run build:server && npm run build:client",
+        "package": "npm run build:client && npm run build:server:release && npm run stage:server && npx @vscode/vsce package --no-dependencies"
     }
 }

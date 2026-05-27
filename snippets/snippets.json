@@ -111,10 +111,11 @@
 	},
 
 	"geometryFull": {
+		"_comment": "Geometry primitive choice list mirrors GEOMETRY_PRIMITIVES in server/src/diagnostics.rs (single source of truth). Update both when adding a new URDF geometry primitive.",
 		"prefix": "geometry",
 		"body": [
 			"<geometry>",
-			"\t${1|<box size=\"0.0 0.0 0.0\"/>,<cylinder radius=\"0.0\" length=\"0.0\"/>,<sphere radius=\"0.0\"/>,<mesh filename=\"\" scale=\"1.0\"/>|}",
+			"\t${1|<box size=\"0.0 0.0 0.0\"/>,<cylinder radius=\"0.0\" length=\"0.0\"/>,<sphere radius=\"0.0\"/>,<mesh filename=\"\" scale=\"1.0 1.0 1.0\"/>|}",
 			"</geometry>"
 		],
 		"description": "Insert full geometric properties"
@@ -124,7 +125,7 @@
 		"prefix": "mesh",
 		"body": [
 			"<geometry>",
-			"\t<mesh filename=\"${1:file_path}\" scale=\"${2:1.0}\"/>",
+			"\t<mesh filename=\"${1:file_path}\" scale=\"${2:1.0 1.0 1.0}\"/>",
 			"</geometry>$0"
 		],
 		"description": "Insert basic geometric properties"
@@ -170,6 +171,7 @@
 	},
 
 	"joint": {
+		"_comment": "Joint-type choice list mirrors JOINT_TYPES in server/src/diagnostics.rs (single source of truth). Update both when adding a new URDF joint type.",
 		"prefix": "joint",
 		"body": [
 			"<joint name=\"${1:joint_name}\" type=\"${2|revolute,continuous,prismatic,fixed,floating,planar|}\">",
@@ -180,6 +182,7 @@
 	},
 
 	"jointFull": {
+		"_comment": "Joint-type choice list mirrors JOINT_TYPES in server/src/diagnostics.rs (single source of truth). Update both when adding a new URDF joint type.",
 		"prefix": "joint",
 		"body": [
 			"<joint name=\"${1:joint_name}\" type=\"${2|revolute,continuous,prismatic,fixed,floating,planar|}\">",
@@ -210,6 +213,7 @@
 	},
 
 	"linkFull": {
+        "_comment": "Geometry primitive choice lists in <visual> and <collision> mirror GEOMETRY_PRIMITIVES in server/src/diagnostics.rs (single source of truth). Update both when adding a new URDF geometry primitive.",
         "prefix": "link",
         "body": [
             "<link name=\"${1:link_name}\">",
@@ -221,7 +225,7 @@
             "\t<visual name=\"\">",
             "\t\t<origin xyz=\"${5:0.0 0.0 0.0}\" rpy=\"${6:0.0 0.0 0.0}\"/>",
             "\t\t<geometry>",
-            "\t\t\t${7|<box size=\"0.0 0.0 0.0\"/>,<cylinder radius=\"0.0\" length=\"0.0\"/>,<sphere radius=\"0.0\"/>,<mesh filename=\"\" scale=\"1.0\"/>|}",
+            "\t\t\t${7|<box size=\"0.0 0.0 0.0\"/>,<cylinder radius=\"0.0\" length=\"0.0\"/>,<sphere radius=\"0.0\"/>,<mesh filename=\"\" scale=\"1.0 1.0 1.0\"/>|}",
             "\t\t</geometry>",
             "\t\t<material name=\"\">",
             "\t\t\t<color rgba=\"1.0 0.0 0.0 1.0\"/>",
@@ -231,7 +235,7 @@
             "\t<collision>",
             "\t\t<origin xyz=\"${5:0.0 0.0 0.0}\" rpy=\"${6:0.0 0.0 0.0}\"/>",
             "\t\t<geometry>",
-            "\t\t\t${7|<box size=\"0.0 0.0 0.0\"/>,<cylinder radius=\"0.0\" length=\"0.0\"/>,<sphere radius=\"0.0\"/>,<mesh filename=\"\" scale=\"1.0\"/>|}",
+            "\t\t\t${7|<box size=\"0.0 0.0 0.0\"/>,<cylinder radius=\"0.0\" length=\"0.0\"/>,<sphere radius=\"0.0\"/>,<mesh filename=\"\" scale=\"1.0 1.0 1.0\"/>|}",
             "\t\t</geometry>",
             "\t</collision>",
             "</link>"
@@ -287,7 +291,7 @@
 
 	"mesh":{
 		"prefix": "mesh",
-		"body": "<mesh filename=\"${1:file_path}\" scale=\"${2:1.0}\"/>",
+		"body": "<mesh filename=\"${1:file_path}\" scale=\"${2:1.0 1.0 1.0}\"/>",
 		"description": "Insert mesh"
 	},
 
@@ -408,10 +412,10 @@
 		"description": "Insert xyz"
 	},
 
-	"xacroInclude": {
-		"prefix": "include",
-		"body":	"<xacro:include filename=\"${1:xacroFile}\"/>",
-		"description": "Insert xacro include tag"
+	"xacroProperty": {
+		"prefix": "xacro",
+		"body":	"<xacro:property name=\"${1:name}\" value=\"${2:0.0}\"/>",
+		"description": "Insert xacro property (v1: no macros, no includes)"
 	},
 	"transmissionFull": {
 		"prefix": "transmission",
@@ -428,5 +432,362 @@
 			"</transmission>"
 		],
 		"description": "Insert full transmission"
+	},
+
+	"gazeboReference": {
+		"prefix": "gazebo",
+		"body": [
+			"<gazebo reference=\"${1:link_name}\">",
+			"\t$0",
+			"</gazebo>"
+		],
+		"description": "Insert gazebo reference block for a link"
+	},
+
+	"sensorCamera": {
+		"prefix": ["camera", "sensor"],
+		"body": [
+			"<gazebo reference=\"${1:link_name}\">",
+			"\t<sensor name=\"${2:camera}\" type=\"camera\">",
+			"\t\t<update_rate>${3:30.0}</update_rate>",
+			"\t\t<visualize>true</visualize>",
+			"\t\t<camera>",
+			"\t\t\t<horizontal_fov>${4:1.396}</horizontal_fov>",
+			"\t\t\t<image>",
+			"\t\t\t\t<width>${5:640}</width>",
+			"\t\t\t\t<height>${6:480}</height>",
+			"\t\t\t\t<format>R8G8B8</format>",
+			"\t\t\t</image>",
+			"\t\t\t<clip>",
+			"\t\t\t\t<near>${7:0.05}</near>",
+			"\t\t\t\t<far>${8:8.0}</far>",
+			"\t\t\t</clip>",
+			"\t\t</camera>",
+			"\t\t<plugin name=\"${9:camera_controller}\" filename=\"libgazebo_ros_camera.so\">",
+			"\t\t\t<ros>",
+			"\t\t\t\t<namespace>${10:/}</namespace>",
+			"\t\t\t\t<remapping>image_raw:=${11:image_raw}</remapping>",
+			"\t\t\t\t<remapping>camera_info:=${12:camera_info}</remapping>",
+			"\t\t\t</ros>",
+			"\t\t\t<camera_name>${2:camera}</camera_name>",
+			"\t\t\t<frame_name>${1:link_name}</frame_name>",
+			"\t\t</plugin>",
+			"\t</sensor>",
+			"</gazebo>"
+		],
+		"description": "Gazebo RGB camera sensor (gazebo_ros_camera)"
+	},
+
+	"sensorDepthCamera": {
+		"prefix": ["depth_camera", "depth", "sensor"],
+		"body": [
+			"<gazebo reference=\"${1:link_name}\">",
+			"\t<sensor name=\"${2:depth_camera}\" type=\"depth\">",
+			"\t\t<update_rate>${3:20.0}</update_rate>",
+			"\t\t<visualize>true</visualize>",
+			"\t\t<camera>",
+			"\t\t\t<horizontal_fov>${4:1.047}</horizontal_fov>",
+			"\t\t\t<image>",
+			"\t\t\t\t<width>${5:640}</width>",
+			"\t\t\t\t<height>${6:480}</height>",
+			"\t\t\t\t<format>R8G8B8</format>",
+			"\t\t\t</image>",
+			"\t\t\t<clip>",
+			"\t\t\t\t<near>${7:0.05}</near>",
+			"\t\t\t\t<far>${8:5.0}</far>",
+			"\t\t\t</clip>",
+			"\t\t</camera>",
+			"\t\t<plugin name=\"${9:depth_camera_controller}\" filename=\"libgazebo_ros_camera.so\">",
+			"\t\t\t<ros>",
+			"\t\t\t\t<namespace>${10:/}</namespace>",
+			"\t\t\t</ros>",
+			"\t\t\t<camera_name>${2:depth_camera}</camera_name>",
+			"\t\t\t<frame_name>${1:link_name}</frame_name>",
+			"\t\t\t<min_depth>${11:0.1}</min_depth>",
+			"\t\t\t<max_depth>${12:5.0}</max_depth>",
+			"\t\t</plugin>",
+			"\t</sensor>",
+			"</gazebo>"
+		],
+		"description": "Gazebo depth camera sensor"
+	},
+
+	"sensorRgbdCamera": {
+		"prefix": ["rgbd", "rgbd_camera", "sensor"],
+		"body": [
+			"<gazebo reference=\"${1:link_name}\">",
+			"\t<sensor name=\"${2:rgbd_camera}\" type=\"depth\">",
+			"\t\t<update_rate>${3:30.0}</update_rate>",
+			"\t\t<visualize>true</visualize>",
+			"\t\t<camera name=\"${2:rgbd_camera}\">",
+			"\t\t\t<horizontal_fov>${4:1.047}</horizontal_fov>",
+			"\t\t\t<image>",
+			"\t\t\t\t<width>${5:640}</width>",
+			"\t\t\t\t<height>${6:480}</height>",
+			"\t\t\t\t<format>R8G8B8</format>",
+			"\t\t\t</image>",
+			"\t\t\t<clip>",
+			"\t\t\t\t<near>${7:0.05}</near>",
+			"\t\t\t\t<far>${8:8.0}</far>",
+			"\t\t\t</clip>",
+			"\t\t</camera>",
+			"\t\t<plugin name=\"${9:rgbd_camera_controller}\" filename=\"libgazebo_ros_camera.so\">",
+			"\t\t\t<ros>",
+			"\t\t\t\t<namespace>${10:/}</namespace>",
+			"\t\t\t</ros>",
+			"\t\t\t<camera_name>${2:rgbd_camera}</camera_name>",
+			"\t\t\t<frame_name>${1:link_name}</frame_name>",
+			"\t\t\t<min_depth>${11:0.1}</min_depth>",
+			"\t\t\t<max_depth>${12:8.0}</max_depth>",
+			"\t\t</plugin>",
+			"\t</sensor>",
+			"</gazebo>"
+		],
+		"description": "Gazebo RGB-D camera (color + depth + point cloud)"
+	},
+
+	"sensorLidar2D": {
+		"prefix": ["lidar", "lidar2d", "laser", "sensor"],
+		"body": [
+			"<gazebo reference=\"${1:link_name}\">",
+			"\t<sensor name=\"${2:lidar}\" type=\"ray\">",
+			"\t\t<pose>0 0 0 0 0 0</pose>",
+			"\t\t<visualize>true</visualize>",
+			"\t\t<update_rate>${3:10.0}</update_rate>",
+			"\t\t<ray>",
+			"\t\t\t<scan>",
+			"\t\t\t\t<horizontal>",
+			"\t\t\t\t\t<samples>${4:360}</samples>",
+			"\t\t\t\t\t<resolution>1</resolution>",
+			"\t\t\t\t\t<min_angle>${5:-3.14159}</min_angle>",
+			"\t\t\t\t\t<max_angle>${6:3.14159}</max_angle>",
+			"\t\t\t\t</horizontal>",
+			"\t\t\t</scan>",
+			"\t\t\t<range>",
+			"\t\t\t\t<min>${7:0.12}</min>",
+			"\t\t\t\t<max>${8:3.5}</max>",
+			"\t\t\t\t<resolution>${9:0.015}</resolution>",
+			"\t\t\t</range>",
+			"\t\t\t<noise>",
+			"\t\t\t\t<type>gaussian</type>",
+			"\t\t\t\t<mean>0.0</mean>",
+			"\t\t\t\t<stddev>0.01</stddev>",
+			"\t\t\t</noise>",
+			"\t\t</ray>",
+			"\t\t<plugin name=\"${10:lidar_controller}\" filename=\"libgazebo_ros_ray_sensor.so\">",
+			"\t\t\t<ros>",
+			"\t\t\t\t<namespace>${11:/}</namespace>",
+			"\t\t\t\t<remapping>~/out:=${12:scan}</remapping>",
+			"\t\t\t</ros>",
+			"\t\t\t<output_type>sensor_msgs/LaserScan</output_type>",
+			"\t\t\t<frame_name>${1:link_name}</frame_name>",
+			"\t\t</plugin>",
+			"\t</sensor>",
+			"</gazebo>"
+		],
+		"description": "2D lidar / laser scanner (ray, LaserScan output)"
+	},
+
+	"sensorLidar3D": {
+		"prefix": ["lidar3d", "velodyne", "pointcloud", "sensor"],
+		"body": [
+			"<gazebo reference=\"${1:link_name}\">",
+			"\t<sensor name=\"${2:lidar3d}\" type=\"gpu_ray\">",
+			"\t\t<pose>0 0 0 0 0 0</pose>",
+			"\t\t<visualize>false</visualize>",
+			"\t\t<update_rate>${3:10.0}</update_rate>",
+			"\t\t<ray>",
+			"\t\t\t<scan>",
+			"\t\t\t\t<horizontal>",
+			"\t\t\t\t\t<samples>${4:1024}</samples>",
+			"\t\t\t\t\t<resolution>1</resolution>",
+			"\t\t\t\t\t<min_angle>-3.14159</min_angle>",
+			"\t\t\t\t\t<max_angle>3.14159</max_angle>",
+			"\t\t\t\t</horizontal>",
+			"\t\t\t\t<vertical>",
+			"\t\t\t\t\t<samples>${5:16}</samples>",
+			"\t\t\t\t\t<resolution>1</resolution>",
+			"\t\t\t\t\t<min_angle>${6:-0.2617}</min_angle>",
+			"\t\t\t\t\t<max_angle>${7:0.2617}</max_angle>",
+			"\t\t\t\t</vertical>",
+			"\t\t\t</scan>",
+			"\t\t\t<range>",
+			"\t\t\t\t<min>${8:0.9}</min>",
+			"\t\t\t\t<max>${9:130.0}</max>",
+			"\t\t\t\t<resolution>${10:0.001}</resolution>",
+			"\t\t\t</range>",
+			"\t\t</ray>",
+			"\t\t<plugin name=\"${11:lidar3d_controller}\" filename=\"libgazebo_ros_ray_sensor.so\">",
+			"\t\t\t<ros>",
+			"\t\t\t\t<namespace>${12:/}</namespace>",
+			"\t\t\t\t<remapping>~/out:=${13:points}</remapping>",
+			"\t\t\t</ros>",
+			"\t\t\t<output_type>sensor_msgs/PointCloud2</output_type>",
+			"\t\t\t<frame_name>${1:link_name}</frame_name>",
+			"\t\t</plugin>",
+			"\t</sensor>",
+			"</gazebo>"
+		],
+		"description": "3D lidar (gpu_ray, PointCloud2 output, Velodyne-style)"
+	},
+
+	"sensorImu": {
+		"prefix": ["imu", "sensor"],
+		"body": [
+			"<gazebo reference=\"${1:link_name}\">",
+			"\t<sensor name=\"${2:imu}\" type=\"imu\">",
+			"\t\t<always_on>true</always_on>",
+			"\t\t<update_rate>${3:100.0}</update_rate>",
+			"\t\t<visualize>false</visualize>",
+			"\t\t<imu>",
+			"\t\t\t<angular_velocity>",
+			"\t\t\t\t<x><noise type=\"gaussian\"><mean>0.0</mean><stddev>2e-4</stddev></noise></x>",
+			"\t\t\t\t<y><noise type=\"gaussian\"><mean>0.0</mean><stddev>2e-4</stddev></noise></y>",
+			"\t\t\t\t<z><noise type=\"gaussian\"><mean>0.0</mean><stddev>2e-4</stddev></noise></z>",
+			"\t\t\t</angular_velocity>",
+			"\t\t\t<linear_acceleration>",
+			"\t\t\t\t<x><noise type=\"gaussian\"><mean>0.0</mean><stddev>1.7e-2</stddev></noise></x>",
+			"\t\t\t\t<y><noise type=\"gaussian\"><mean>0.0</mean><stddev>1.7e-2</stddev></noise></y>",
+			"\t\t\t\t<z><noise type=\"gaussian\"><mean>0.0</mean><stddev>1.7e-2</stddev></noise></z>",
+			"\t\t\t</linear_acceleration>",
+			"\t\t</imu>",
+			"\t\t<plugin name=\"${4:imu_controller}\" filename=\"libgazebo_ros_imu_sensor.so\">",
+			"\t\t\t<ros>",
+			"\t\t\t\t<namespace>${5:/}</namespace>",
+			"\t\t\t\t<remapping>~/out:=${6:imu}</remapping>",
+			"\t\t\t</ros>",
+			"\t\t\t<initial_orientation_as_reference>false</initial_orientation_as_reference>",
+			"\t\t\t<frame_name>${1:link_name}</frame_name>",
+			"\t\t</plugin>",
+			"\t</sensor>",
+			"</gazebo>"
+		],
+		"description": "IMU sensor (angular velocity + linear acceleration)"
+	},
+
+	"sensorGps": {
+		"prefix": ["gps", "navsat", "sensor"],
+		"body": [
+			"<gazebo reference=\"${1:link_name}\">",
+			"\t<sensor name=\"${2:gps}\" type=\"gps\">",
+			"\t\t<always_on>true</always_on>",
+			"\t\t<update_rate>${3:10.0}</update_rate>",
+			"\t\t<gps>",
+			"\t\t\t<position_sensing>",
+			"\t\t\t\t<horizontal><noise type=\"gaussian\"><mean>0.0</mean><stddev>1e-2</stddev></noise></horizontal>",
+			"\t\t\t\t<vertical><noise type=\"gaussian\"><mean>0.0</mean><stddev>1e-2</stddev></noise></vertical>",
+			"\t\t\t</position_sensing>",
+			"\t\t</gps>",
+			"\t\t<plugin name=\"${4:gps_controller}\" filename=\"libgazebo_ros_gps_sensor.so\">",
+			"\t\t\t<ros>",
+			"\t\t\t\t<namespace>${5:/}</namespace>",
+			"\t\t\t\t<remapping>~/out:=${6:gps/fix}</remapping>",
+			"\t\t\t</ros>",
+			"\t\t\t<frame_name>${1:link_name}</frame_name>",
+			"\t\t</plugin>",
+			"\t</sensor>",
+			"</gazebo>"
+		],
+		"description": "GPS / NavSat sensor"
+	},
+
+	"sensorSonar": {
+		"prefix": ["sonar", "ultrasonic", "range", "sensor"],
+		"body": [
+			"<gazebo reference=\"${1:link_name}\">",
+			"\t<sensor name=\"${2:sonar}\" type=\"ray\">",
+			"\t\t<always_on>true</always_on>",
+			"\t\t<update_rate>${3:10.0}</update_rate>",
+			"\t\t<ray>",
+			"\t\t\t<scan>",
+			"\t\t\t\t<horizontal>",
+			"\t\t\t\t\t<samples>${4:5}</samples>",
+			"\t\t\t\t\t<resolution>1</resolution>",
+			"\t\t\t\t\t<min_angle>${5:-0.2}</min_angle>",
+			"\t\t\t\t\t<max_angle>${6:0.2}</max_angle>",
+			"\t\t\t\t</horizontal>",
+			"\t\t\t\t<vertical>",
+			"\t\t\t\t\t<samples>5</samples>",
+			"\t\t\t\t\t<resolution>1</resolution>",
+			"\t\t\t\t\t<min_angle>-0.2</min_angle>",
+			"\t\t\t\t\t<max_angle>0.2</max_angle>",
+			"\t\t\t\t</vertical>",
+			"\t\t\t</scan>",
+			"\t\t\t<range>",
+			"\t\t\t\t<min>${7:0.02}</min>",
+			"\t\t\t\t<max>${8:4.0}</max>",
+			"\t\t\t\t<resolution>${9:0.01}</resolution>",
+			"\t\t\t</range>",
+			"\t\t</ray>",
+			"\t\t<plugin name=\"${10:sonar_controller}\" filename=\"libgazebo_ros_ray_sensor.so\">",
+			"\t\t\t<output_type>sensor_msgs/Range</output_type>",
+			"\t\t\t<radiation_type>ultrasound</radiation_type>",
+			"\t\t\t<frame_name>${1:link_name}</frame_name>",
+			"\t\t</plugin>",
+			"\t</sensor>",
+			"</gazebo>"
+		],
+		"description": "Ultrasonic / sonar range sensor (sensor_msgs/Range)"
+	},
+
+	"sensorForceTorque": {
+		"prefix": ["force_torque", "ft", "wrench", "sensor"],
+		"body": [
+			"<gazebo reference=\"${1:joint_name}\">",
+			"\t<provideFeedback>true</provideFeedback>",
+			"</gazebo>",
+			"<gazebo>",
+			"\t<plugin name=\"${2:ft_sensor}\" filename=\"libgazebo_ros_ft_sensor.so\">",
+			"\t\t<ros>",
+			"\t\t\t<namespace>${3:/}</namespace>",
+			"\t\t\t<remapping>~/wrench:=${4:ft_data}</remapping>",
+			"\t\t</ros>",
+			"\t\t<joint_name>${1:joint_name}</joint_name>",
+			"\t\t<update_rate>${5:100}</update_rate>",
+			"\t</plugin>",
+			"</gazebo>"
+		],
+		"description": "Force-torque sensor on a joint (WrenchStamped)"
+	},
+
+	"sensorContact": {
+		"prefix": ["contact", "bumper", "sensor"],
+		"body": [
+			"<gazebo reference=\"${1:link_name}\">",
+			"\t<sensor name=\"${2:contact}\" type=\"contact\">",
+			"\t\t<always_on>true</always_on>",
+			"\t\t<update_rate>${3:50.0}</update_rate>",
+			"\t\t<contact>",
+			"\t\t\t<collision>${4:link_name_collision}</collision>",
+			"\t\t</contact>",
+			"\t\t<plugin name=\"${5:contact_controller}\" filename=\"libgazebo_ros_bumper.so\">",
+			"\t\t\t<ros>",
+			"\t\t\t\t<namespace>${6:/}</namespace>",
+			"\t\t\t\t<remapping>bumper_states:=${7:bumper}</remapping>",
+			"\t\t\t</ros>",
+			"\t\t\t<frame_name>${1:link_name}</frame_name>",
+			"\t\t</plugin>",
+			"\t</sensor>",
+			"</gazebo>"
+		],
+		"description": "Contact / bumper sensor"
+	},
+
+	"sensorP3D": {
+		"prefix": ["p3d", "groundtruth", "odom"],
+		"body": [
+			"<gazebo>",
+			"\t<plugin name=\"${1:p3d_controller}\" filename=\"libgazebo_ros_p3d.so\">",
+			"\t\t<ros>",
+			"\t\t\t<namespace>${2:/}</namespace>",
+			"\t\t\t<remapping>odom:=${3:ground_truth/odom}</remapping>",
+			"\t\t</ros>",
+			"\t\t<update_rate>${4:50.0}</update_rate>",
+			"\t\t<body_name>${5:base_link}</body_name>",
+			"\t\t<frame_name>${6:world}</frame_name>",
+			"\t</plugin>",
+			"</gazebo>"
+		],
+		"description": "P3D ground-truth odometry plugin"
 	}
 }
